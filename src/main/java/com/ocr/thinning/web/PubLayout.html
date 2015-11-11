@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8"/>
+<title wicket:id="title">Smart Road: Better roads</title>
+<meta wicket:id="metaDescription" name="description"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="../bower_components/html5shiv/dist/html5shiv.js"></script>
+<script src="../bower_components/respond/dest/respond.min.js"></script>
+<![endif]-->
+<style>
+body { padding-top: 63px }
+</style>
+</head>
+<body>
+<!-- header -->
+<header class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <!-- logo -->
+            <div class="logo">
+                <a href="/" class="navbar-brand">Pattern Recognition FYI</a>
+            </div>
+            <!-- /logo -->
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <nav class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li x-class="active"><a wicket:id="equalizationLink" href="#">Equalization</a></li>
+                <li x-class="active"><a wicket:id="chainCodeLink" href="#">Chain Code</a></li>
+                <li x-class="active"><a wicket:id="zhangSuenLink" href="#">Zhang Suen Thinning</a></li>
+                <li x-class="active"><a wicket:id="otsuLink" href="#">Otsu Thresholding</a></li>
+                <li x-class="active"><a wicket:id="convolutionLink" href="#">Konvolusi Citra</a></li>
+                <li x-class="active"><a wicket:id="sharpnessLink" href="#">Ketajaman Citra</a></li>
+                <li x-class="active"><a wicket:id="lineObserverLink" href="#">Analisis Baris</a></li>
+                <!--<li x-class="active"><a wicket:id="histogramLink" href="#">Histogram</a></li>
+                <li x-class="active"><a wicket:id="camerasLink" href="/id/cameras">Cameras</a></li>
+                <li x-class="active"><a href="/id/roads/1">Sample Road</a></li>
+                <li x-class="active"><a wicket:id="detectorLink" href="#">Detector</a></li>
+
+                <li x-class="active"><a wicket:id="tweetListLink" href="#">Tweets</a></li>
+                <li x-class="active"><a wicket:id="tweetMapLink" href="#">Tweet Map</a></li>-->
+                <div class="clearfix"> </div>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- //End-banner-->
+
+<div wicket:id="notificationPanel"></div>
+
+<wicket:child/>
+
+</body>
+</html>
