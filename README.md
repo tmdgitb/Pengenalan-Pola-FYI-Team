@@ -1,2 +1,2 @@
-# ZhangSuenAlgorithm
-Thinning method - Maven Project
+# Pattern Recognition
+Recognize some Image Pattern - Maven Project
