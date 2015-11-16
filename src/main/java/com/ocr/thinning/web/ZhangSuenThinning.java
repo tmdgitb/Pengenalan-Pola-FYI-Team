@@ -98,7 +98,7 @@ public class ZhangSuenThinning extends PubLayout {
                 }
             }
         });
-
+        /*
         form.add(new LaddaAjaxButton("klik",new Model<>("Convert to Skeleton"), Buttons.Type.Default){
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -110,7 +110,7 @@ public class ZhangSuenThinning extends PubLayout {
                 }
             }
         });
-
+        */
         add(form);
     }
 
@@ -136,6 +136,5 @@ public class ZhangSuenThinning extends PubLayout {
     public IModel<String> getMetaDescriptionModel() {
         return new Model<>("Zmhang Suen Thinning Algorithm");
     }
-
 
 }

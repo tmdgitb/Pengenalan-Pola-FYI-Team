@@ -1,6 +1,7 @@
 package com.ocr.thinning.web;
 
 import com.google.common.collect.ImmutableList;
+import com.ocr.thinning.ConvolutionContainer;
 import com.ocr.thinning.EqualizationContainer;
 import com.ocr.thinning.LineObserverContainer;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
@@ -55,6 +56,8 @@ public class LineObserverPage extends PubLayout {
         form.add(stepper);
         WebMarkupContainer chartrgb = new WebMarkupContainer("chartrgb");
         chartrgb.setOutputMarkupId(true);
+        WebMarkupContainer chartrgbotsu = new WebMarkupContainer("chartrgbotsu");
+        chartrgbotsu.setOutputMarkupId(true);
         form.add(fileUpload);
         Image inputan = new Image("inputPic", new DynamicImageResource("image/png") {
             @Override
@@ -64,6 +67,14 @@ public class LineObserverPage extends PubLayout {
         });
         inputan.setOutputMarkupId(true);
         form.add(inputan);
+        Image otsu = new Image("otsuPic", new DynamicImageResource("image/png") {
+            @Override
+            protected byte[] getImageData(Attributes attributes) {
+                return getResultBin();
+            }
+        });
+        otsu.setOutputMarkupId(true);
+        form.add(otsu);
         final LoadableDetachableModel<String> c3Model = new LoadableDetachableModel<String>() {
             @Override
             protected String load() {
@@ -79,16 +90,34 @@ public class LineObserverPage extends PubLayout {
                         "});";
             }
         };
+        final LoadableDetachableModel<String> c3Modelotsu = new LoadableDetachableModel<String>() {
+            @Override
+            protected String load() {
+                //eq.getJSonC3String(line);
+                final String dataJson = eq.getJSonC3StringBin();
+                log.info("String result : {}", dataJson);
+                return "var chart = c3.generate({\n" +
+                        "    bindto: '#" + chartrgbotsu.getMarkupId() + " .chart',\n" +
+                        "    data: {" +
+                        "        columns: [" + dataJson + "]," +
+                        "        colors: {data: 'gray'},\n" +
+                        "        types: {data: 'bar'}\n" +
+                        "    }" +
+                        "});";
+            }
+        };
         Label markupLabel = new Label("markupLabel", new AbstractReadOnlyModel<String>() {
             @Override
             public String getObject() {
-                return eq.getLine()+" Height : "+eq.getMaxRow()+" Width : "+eq.getMaxCol() ;
+                return eq.getLine() + " Height : " + eq.getMaxRow() + " Width : " + eq.getMaxCol();
             }
         });
         form.add(markupLabel);
         markupLabel.setOutputMarkupId(true);
         chartrgb.add(new Label("c3", c3Model).setEscapeModelStrings(false));
         form.add(chartrgb);
+        chartrgbotsu.add(new Label("c3otsu", c3Modelotsu).setEscapeModelStrings(false));
+        form.add(chartrgbotsu);
         form.add(new LaddaAjaxButton("klik", new Model<>("Set Gambar"), Buttons.Type.Default) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -98,7 +127,7 @@ public class LineObserverPage extends PubLayout {
                     line = 0;
                     log.info("masuk setelah upload");
                     eq.setInput(uploadedFile.getBytes());
-                    target.add(chartrgb, inputan,  markupLabel);
+                    target.add(chartrgb, inputan, chartrgbotsu, otsu, markupLabel);
                 }
             }
         });
@@ -110,7 +139,7 @@ public class LineObserverPage extends PubLayout {
                 log.info("masuk setelah upload: " + stepper.getModelObject());
                 if (line - stepper.getModelObject() >= 0 && line - stepper.getModelObject() <= eq.getMaxRow() - 1)
                     line = line - stepper.getModelObject();
-                target.add(chartrgb,inputan, markupLabel);
+                target.add(chartrgb, inputan, chartrgbotsu, otsu, markupLabel);
             }
         });
 
@@ -121,7 +150,7 @@ public class LineObserverPage extends PubLayout {
                 log.info("masuk setelah upload : " + stepper.getModelObject());
                 if (line + stepper.getModelObject() >= 0 && line + stepper.getModelObject() <= eq.getMaxRow() - 1)
                     line = line + stepper.getModelObject();
-                target.add( chartrgb, inputan, markupLabel);
+                target.add(chartrgb, inputan, chartrgbotsu, otsu, markupLabel);
             }
         });
 
@@ -157,5 +186,9 @@ public class LineObserverPage extends PubLayout {
 
     public byte[] getInput() {
         return eq.getResult();
+    }
+
+    public byte[] getResultBin() {
+        return eq.getBinResult();
     }
 }

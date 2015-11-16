@@ -10,6 +10,11 @@ public class Histogram {
     byte distribution[] = new byte[256 * 256 * 256];
     public int uniqueColor;
     public int totalPix;
+
+    public byte[] getDistribution(){
+        return distribution;
+    }
+
     public String getJsonC3String() {
         String value = "";
         for (int i = 0; i <= 3; i++) {
@@ -66,4 +71,6 @@ public class Histogram {
             }
         }
     }
+
+
 }

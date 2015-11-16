@@ -73,4 +73,34 @@ public class OtsuTresholding {
         }
         thresholdValue = (int)(( threshold1 + threshold2 ) / 2.0);
     }
+
+    public void findThreshold3(){
+        int total = hist.totalPix;
+        float sum = 0;
+        for(int i=0; i<256; i++) sum += i * hist.lv[3][i];
+        float sumB = 0;
+        int wB = 0;
+        int wF = 0;
+
+        float varMax = 0;
+
+        for(int i=0 ; i<256 ; i++) {
+            wB += hist.lv[3][i];
+            if(wB == 0) continue;
+            wF = total - wB;
+
+            if(wF == 0) break;
+
+            sumB += (float) (i * hist.lv[3][i]);
+            float mB = sumB / wB;
+            float mF = (sum - sumB) / wF;
+
+            float varBetween = (float) wB * (float) wF * (mB - mF) * (mB - mF);
+
+            if(varBetween > varMax) {
+                varMax = varBetween;
+                thresholdValue = i;
+            }
+        }
+    }
 }

@@ -44,6 +44,7 @@ public abstract class PubLayout extends WebPage {
         add(new BookmarkablePageLink<>("convolutionLink",ConvolutionPage.class));
         add(new BookmarkablePageLink<>("sharpnessLink",ImageSharpnessPage.class));
         add(new BookmarkablePageLink<>("lineObserverLink",LineObserverPage.class));
+        add(new BookmarkablePageLink<>("colorMappingLink",ColorMapGroupingPage.class));
         //       add(new BookmarkablePageLink<>("histogramLink", HistogramPage.class));
 //        add(new BookmarkablePageLink<>("roadsLink", RoadListPage.class,
 //                new PageParameters().set(SeoBookmarkableMapper.LOCALE_PREF_ID_PARAMETER, localePrefId)));

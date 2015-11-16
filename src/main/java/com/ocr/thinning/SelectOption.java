@@ -31,6 +31,6 @@ public class SelectOption implements Serializable{
     }
 
     public String toString(){
-        return value+") "+key;
+        return key;
     }
 }

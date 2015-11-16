@@ -18,11 +18,10 @@ import java.util.List;
 public class ConvolutionContainer {
     private static final Logger log = LoggerFactory.getLogger(ConvolutionContainer.class);
     private Mat input, output, convolutedOutput;
-    private OperatorKernel operatorKernel  = new OperatorKernel();
-    private int[] nmatrix = new int[9];
+    private OperatorKernel operatorKernel = new OperatorKernel();
+    private int[] nmatrix;
 
     public ConvolutionContainer() {
-        nmatrix = new int[9];
         operatorKernel = new OperatorKernel();
         //operatorKernel.setOperatorSobel();
     }
@@ -39,19 +38,23 @@ public class ConvolutionContainer {
         this.input = Highgui.imdecode(mb, Highgui.CV_LOAD_IMAGE_GRAYSCALE);
     }
 
+    public void setInput(Mat a){
+        this.input = a;
+    }
+
     public void setOperatorKernel(int opsi) {
-        if (opsi==OperatorOption.SOBEL_OPERATOR){
+        if (opsi == OperatorOption.SOBEL_OPERATOR) {
             operatorKernel = new OperatorKernel();
             operatorKernel.setOperatorSobel();
-        }else if(opsi==OperatorOption.PREWIT_OPERATOR){
+        } else if (opsi == OperatorOption.PREWIT_OPERATOR) {
             operatorKernel = new OperatorKernel();
             operatorKernel.setOperatorPrewit();
         }
     }
 
-    public void setOperatorKernel(int a,int b, int c){
+    public void setOperatorKernel(int a, int b, int c) {
         operatorKernel = new OperatorKernel();
-        operatorKernel.setCustomOperator(a,b,c);
+        operatorKernel.setCustomOperator(a, b, c);
     }
 
     private void createOutput() {
@@ -74,7 +77,7 @@ public class ConvolutionContainer {
 
             output.get(i - 1, j - 1, data1);
             output.get(i + 1, j + 1, data2);
-            data3[0] = (byte)Math.abs(data1[0] - data2[0]);
+            data3[0] = (byte) Math.abs(data1[0] - data2[0]);
             output.put(i - 1, j - 1, data3);
                     /*if (data1[0] < data2[0]) {
                         output.put(i - 1, j - 1, data2);
@@ -82,7 +85,7 @@ public class ConvolutionContainer {
 
             output.get(i - 1, j, data1);
             output.get(i + 1, j, data2);
-            data3[0] = (byte)Math.abs(data1[0] - data2[0]);
+            data3[0] = (byte) Math.abs(data1[0] - data2[0]);
             output.put(i - 1, j, data3);
                     /*if (data1[0] < data2[0]) {
                         output.put(i - 1, j, data2);
@@ -90,7 +93,7 @@ public class ConvolutionContainer {
 
             output.get(i - 1, j + 1, data1);
             output.get(i + 1, j - 1, data2);
-            data3[0] = (byte)Math.abs(data1[0] - data2[0]);
+            data3[0] = (byte) Math.abs(data1[0] - data2[0]);
             output.put(i - 1, j + 1, data3);
                     /*if (data1[0] < data2[0]) {
                         output.put(i - 1, j + 1, data2);
@@ -100,7 +103,7 @@ public class ConvolutionContainer {
 
             output.get(i - 1, j - 1, data1);
             output.get(i + 1, j + 1, data2);
-            data3[0] = (byte)Math.abs(data1[0] - data2[0]);
+            data3[0] = (byte) Math.abs(data1[0] - data2[0]);
             output.put(i + 1, j + 1, data3);
                     /*if (data1[0] > data2[0]) {
                         output.put(i + 1, j + 1, data1);
@@ -108,7 +111,7 @@ public class ConvolutionContainer {
 
             output.get(i - 1, j, data1);
             output.get(i + 1, j, data2);
-            data3[0] = (byte)Math.abs(data1[0] - data2[0]);
+            data3[0] = (byte) Math.abs(data1[0] - data2[0]);
             output.put(i + 1, j, data3);
                     /*if (data1[0] > data2[0]) {
                         output.put(i + 1, j, data1);
@@ -116,7 +119,7 @@ public class ConvolutionContainer {
 
             output.get(i - 1, j + 1, data1);
             output.get(i + 1, j - 1, data2);
-            data3[0] = (byte)Math.abs(data1[0] - data2[0]);
+            data3[0] = (byte) Math.abs(data1[0] - data2[0]);
             output.put(i + 1, j - 1, data3);
                     /*if (data1[0] > data2[0]) {
                         output.put(i + 1, j - 1, data1);
@@ -127,7 +130,7 @@ public class ConvolutionContainer {
             int j = 1;
             output.get(i - 1, j - 1, data1);
             output.get(i + 1, j + 1, data2);
-            data3[0] = (byte)Math.abs(data1[0] - data2[0]);
+            data3[0] = (byte) Math.abs(data1[0] - data2[0]);
             output.put(i - 1, j - 1, data3);
                     /*if (data1[0] < data2[0]) {
                         output.put(i - 1, j - 1, data2);
@@ -135,7 +138,7 @@ public class ConvolutionContainer {
 
             output.get(i, j - 1, data1);
             output.get(i, j + 1, data2);
-            data3[0] = (byte)Math.abs(data1[0] - data2[0]);
+            data3[0] = (byte) Math.abs(data1[0] - data2[0]);
             output.put(i, j - 1, data3);
                     /*if (data1[0] < data2[0]) {
                         output.put(i, j - 1, data2);
@@ -143,7 +146,7 @@ public class ConvolutionContainer {
 
             output.get(i + 1, j - 1, data1);
             output.get(i - 1, j + 1, data2);
-            data3[0] = (byte)Math.abs(data1[0] - data2[0]);
+            data3[0] = (byte) Math.abs(data1[0] - data2[0]);
             output.put(i + 1, j - 1, data3);
                     /*if (data1[0] < data2[0]) {
                         output.put(i + 1, j - 1, data2);
@@ -151,7 +154,7 @@ public class ConvolutionContainer {
             j = output.cols() - 2;
             output.get(i - 1, j - 1, data1);
             output.get(i + 1, j + 1, data2);
-            data3[0] = (byte)Math.abs(data1[0] - data2[0]);
+            data3[0] = (byte) Math.abs(data1[0] - data2[0]);
             output.put(i + 1, j + 1, data3);
                     /*if (data1[0] > data2[0]) {
                         output.put(i + 1, j + 1, data1);
@@ -159,7 +162,7 @@ public class ConvolutionContainer {
 
             output.get(i, j - 1, data1);
             output.get(i, j + 1, data2);
-            data3[0] = (byte)Math.abs(data1[0] - data2[0]);
+            data3[0] = (byte) Math.abs(data1[0] - data2[0]);
             output.put(i, j + 1, data3);
                     /*if (data1[0] > data2[0]) {
                         output.put(i, j + 1, data1);
@@ -167,7 +170,7 @@ public class ConvolutionContainer {
 
             output.get(i + 1, j - 1, data1);
             output.get(i - 1, j + 1, data2);
-            data3[0] = (byte)Math.abs(data1[0] - data2[0]);
+            data3[0] = (byte) Math.abs(data1[0] - data2[0]);
             output.put(i - 1, j + 1, data3);
                     /*if (data1[0] > data2[0]) {
                         output.put(i - 1, j + 1, data1);
@@ -176,60 +179,153 @@ public class ConvolutionContainer {
     }
 
     private void konvolusiOutput() {
+        nmatrix = new int[9];
         convolutedOutput = input.clone();
         for (int i = 1; i < output.rows() - 1; i++) {
             for (int j = 1; j < output.cols() - 1; j++) {
                 byte[] data = new byte[1];
 
                 output.get(i - 1, j - 1, data);
-                nmatrix[0] = data[0];
+                nmatrix[0] = Konversi.byteInt(data[0]);
 
                 output.get(i - 1, j, data);
-                nmatrix[1] = data[0];
+                nmatrix[1] = Konversi.byteInt(data[0]);
 
                 output.get(i - 1, j + 1, data);
-                nmatrix[2] = data[0];
+                nmatrix[2] = Konversi.byteInt(data[0]);
 
                 output.get(i, j - 1, data);
-                nmatrix[3] = data[0];
+                nmatrix[3] = Konversi.byteInt(data[0]);
 
                 output.get(i, j, data);
-                nmatrix[4] = data[0];
+                nmatrix[4] = Konversi.byteInt(data[0]);
 
                 output.get(i, j + 1, data);
-                nmatrix[5] = data[0];
+                nmatrix[5] = Konversi.byteInt(data[0]);
 
                 output.get(i + 1, j - 1, data);
-                nmatrix[6] = data[0];
+                nmatrix[6] = Konversi.byteInt(data[0]);
 
                 output.get(i + 1, j, data);
-                nmatrix[7] = data[0];
+                nmatrix[7] = Konversi.byteInt(data[0]);
 
                 output.get(i + 1, j + 1, data);
-                nmatrix[8] = data[0];
+                nmatrix[8] = Konversi.byteInt(data[0]);
 
-                data[0] = (byte)operatorKernel.normalizeGrad(operatorKernel.getGradienXY(nmatrix));
-
-                convolutedOutput.put(i-1,j-1,data);
+                data[0] = (byte) operatorKernel.normalizeGrad(operatorKernel.getGradienXY(nmatrix));
+                convolutedOutput.put(i - 1, j - 1, data);
             }
         }
     }
 
-    public byte[] getConvolutedOutput(){
+    public byte[] getConvolutedOutput() {
         MatOfByte result = new MatOfByte();
         Highgui.imencode(".png", convolutedOutput, result);
         byte[] nil = result.toArray();
         return nil;
     }
 
-    public byte[] getInput(){
+    public Mat getConvolutedOutputMat(){
+        return convolutedOutput;
+    }
+
+    public byte[] getInput() {
         MatOfByte result = new MatOfByte();
         Highgui.imencode(".png", input, result);
         byte[] nil = result.toArray();
         return nil;
     }
 
-    public void processInput(){
+    /*
+     * 0  1  2  3  4
+     * 5  6  7  8  9
+     * 10 11 12 13 14
+     * 15 16 17 18 19
+     * 20 21 22 23 24
+     */
+    public void processGaussian() {
+        operatorKernel.setOperatorGaussian();
+        output = new Mat(input.rows() + 4, input.cols() + 4, Highgui.CV_LOAD_IMAGE_GRAYSCALE);
+        int[][] cek = new int[output.rows()][output.cols()];
+        byte[] datain = new byte[1];
+        datain[0] = 127;
+        for (int i = 0; i < output.rows(); i++) {
+            for (int j = 0; j < output.cols(); j++) {
+                output.put(i, j, datain);
+            }
+        }
+
+        for (int i = 0; i < input.rows(); i++) {
+            for (int j = 0; j < input.cols(); j++) {
+                input.get(i,j,datain);
+                output.put(i+2,j+2,datain);
+            }
+        }
+
+        nmatrix = new int[25];
+        convolutedOutput = input.clone();
+        for (int i = 2; i < output.rows() - 2; i++) {
+            for (int j = 2; j < output.cols() - 2; j++) {
+                byte[] data = new byte[1];
+                output.get(i - 2, j - 2, data);
+                nmatrix[0] = Konversi.byteInt(data[0]);
+                output.get(i - 2, j - 1, data);
+                nmatrix[1] = Konversi.byteInt(data[0]);
+                output.get(i - 2, j, data);
+                nmatrix[2] = Konversi.byteInt(data[0]);
+                output.get(i - 2, j + 1, data);
+                nmatrix[3] = Konversi.byteInt(data[0]);
+                output.get(i - 2, j + 2, data);
+                nmatrix[4] = Konversi.byteInt(data[0]);
+                output.get(i - 1, j - 2, data);
+                nmatrix[5] = Konversi.byteInt(data[0]);
+                output.get(i - 1, j - 1, data);
+                nmatrix[6] = Konversi.byteInt(data[0]);
+                output.get(i - 1, j, data);
+                nmatrix[7] = Konversi.byteInt(data[0]);
+                output.get(i - 1, j + 1, data);
+                nmatrix[8] = Konversi.byteInt(data[0]);
+                output.get(i - 1, j + 2, data);
+                nmatrix[9] = Konversi.byteInt(data[0]);
+                output.get(i, j - 2, data);
+                nmatrix[10] = Konversi.byteInt(data[0]);
+                output.get(i, j - 1, data);
+                nmatrix[11] = Konversi.byteInt(data[0]);
+                output.get(i, j, data);
+                nmatrix[12] = Konversi.byteInt(data[0]);
+                output.get(i, j + 1, data);
+                nmatrix[13] = Konversi.byteInt(data[0]);
+                output.get(i, j + 2, data);
+                nmatrix[14] = Konversi.byteInt(data[0]);
+                output.get(i + 1, j - 2, data);
+                nmatrix[15] = Konversi.byteInt(data[0]);
+                output.get(i + 1, j - 1, data);
+                nmatrix[16] = Konversi.byteInt(data[0]);
+                output.get(i + 1, j, data);
+                nmatrix[17] = Konversi.byteInt(data[0]);
+                output.get(i + 1, j + 1, data);
+                nmatrix[18] = Konversi.byteInt(data[0]);
+                output.get(i + 1, j + 2, data);
+                nmatrix[19] = Konversi.byteInt(data[0]);
+                output.get(i + 2, j - 2, data);
+                nmatrix[20] = Konversi.byteInt(data[0]);
+                output.get(i + 2, j - 1, data);
+                nmatrix[21] = Konversi.byteInt(data[0]);
+                output.get(i + 2, j, data);
+                nmatrix[22] = Konversi.byteInt(data[0]);
+                output.get(i + 2, j + 1, data);
+                nmatrix[23] = Konversi.byteInt(data[0]);
+                output.get(i + 2, j + 2, data);
+                nmatrix[24] = Konversi.byteInt(data[0]);
+                cek[i][j]= operatorKernel.normalizeGaussian(operatorKernel.getGradienGauss(nmatrix));
+                convolutedOutput.put(i-2, j-2, operatorKernel.normalizeGaussian(operatorKernel.getGradienGauss(nmatrix)));
+            }
+        }
+        log.info("cek {} ",cek);
+    }
+
+
+    public void processInput() {
         createOutput();
         konvolusiOutput();
     }

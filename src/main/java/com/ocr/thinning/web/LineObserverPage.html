@@ -21,7 +21,7 @@
                 <button wicket:id="previous">Get Image</button>
             </div>
             <div class="col-md-1" style="padding:4px 0px 15px 0px">
-                <input wicket:id="stepper" type="number" size="20" />
+                <input wicket:id="stepper" type="number" size="20"/>
             </div>
             <div class="col-md-1" style="padding:4px 0px 15px 0px">
                 <button wicket:id="next">Get Image</button>
@@ -32,6 +32,26 @@
             <div wicket:id="chartrgb" class="col-md-6">
                 <div class="chart"></div>
                 <script wicket:id="c3">
+var chart = c3.generate({
+    bindto: '#chart',
+    data: {
+      columns: [
+        ['data1', 30, 200, 100, 400, 150, 250],
+        ['data2', 50, 20, 10, 40, 15, 25]
+      ]
+    }
+});
+
+                </script>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <img class="img-responsive" wicket:id="otsuPic"/>
+            </div>
+            <div wicket:id="chartrgbotsu" class="col-md-6">
+                <div class="chart"></div>
+                <script wicket:id="c3otsu">
 var chart = c3.generate({
     bindto: '#chart',
     data: {

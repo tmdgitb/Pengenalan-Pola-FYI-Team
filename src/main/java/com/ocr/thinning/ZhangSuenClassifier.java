@@ -12,8 +12,14 @@ public class ZhangSuenClassifier {
     private Feature feature;
     private boolean outputHuruf[];
     private boolean outputAngka[];
-    private char[] indexHuruf = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V'
-            , 'W', 'X', 'Y', 'Z'};
+    private char[] indexHuruf = {
+            'A',
+            'B', 'C', 'D', 'E', 'F',
+            'G', 'H', 'I', 'J', 'K',
+            'L', 'M', 'N', 'O', 'P',
+            'Q', 'R', 'S', 'T', 'U',
+            'V', 'W', 'X', 'Y', 'Z'
+    };
 
     public ZhangSuenClassifier() {
         outputHuruf = new boolean[26];
@@ -82,7 +88,6 @@ public class ZhangSuenClassifier {
         }
         return false;
     }
-
 
     public boolean classifyH() {
         if (feature.getIntersection().size() == 2 && feature.getUjung().size() == 4 && feature.getBulatan() == 0) {
@@ -186,7 +191,9 @@ public class ZhangSuenClassifier {
     }
 
     public boolean classify0() {
-
+        if (feature.getIntersection().size() == 0 && feature.getBulatan() == 1 && feature.getUjung().size() == 0) {
+            return true;
+        }
         return false;
     }
 
@@ -364,5 +371,4 @@ public class ZhangSuenClassifier {
         if (dBawahKiri <= dAtasKanan && dBawahKiri <= dAtasKiri && dBawahKiri <= dBawahKanan) return true;
         return false;
     }
-
 }
