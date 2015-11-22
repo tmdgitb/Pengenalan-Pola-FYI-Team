@@ -42,6 +42,12 @@ public class ColorMapGroupingPage extends PubLayout {
                 return getInput();
             }
         });
+        Image bin = new Image("bin", new DynamicImageResource("image/png") {
+            @Override
+            protected byte[] getImageData(Attributes attributes) {
+                return getBin();
+            }
+        });
         Image outputan = new Image("output", new DynamicImageResource("image/png") {
             @Override
             protected byte[] getImageData(Attributes attributes) {
@@ -60,6 +66,8 @@ public class ColorMapGroupingPage extends PubLayout {
         sampleImage.setOutputMarkupId(true);
         form.add(outputan);
         outputan.setOutputMarkupId(true);
+        form.add(bin);
+        bin.setOutputMarkupId(true);
         form.add(fileUpload);
         form.add(sampleUpload);
         final TextField<String> group = new TextField<String>("group", Model.of(""));
@@ -72,7 +80,7 @@ public class ColorMapGroupingPage extends PubLayout {
                 if (uploadedFile != null) {
                     colorMapGroupingContainer.setInput(uploadedFile.getBytes());
                     colorMapGroupingContainer.colorGrouping();
-                    target.add(inputan, outputan);
+                    target.add(inputan, bin, outputan);
                 }
             }
         });
@@ -83,9 +91,16 @@ public class ColorMapGroupingPage extends PubLayout {
                 final FileUpload uploadedFile = sampleUpload.getFileUpload();
                 if (uploadedFile != null) {
                     colorMapGroupingContainer.setSample(uploadedFile.getBytes());
-                    colorMapGroupingContainer.setColorMaps(group.getValue(),2);
+                    colorMapGroupingContainer.setColorMaps(group.getValue(),60);
                     target.add(sampleImage);
                 }
+            }
+        });
+        form.add(new LaddaAjaxButton("resetSample", new Model<>("Reset Sample"), Buttons.Type.Default) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+                colorMapGroupingContainer.resetColorMap();
             }
         });
         add(form);
@@ -94,6 +109,10 @@ public class ColorMapGroupingPage extends PubLayout {
 
     public byte[] getInput() {
         return colorMapGroupingContainer.getInput();
+    }
+
+    public byte[] getBin(){
+        return colorMapGroupingContainer.getBin();
     }
 
     public byte[] getOutput() {

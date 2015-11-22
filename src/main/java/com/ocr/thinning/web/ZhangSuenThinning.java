@@ -66,7 +66,7 @@ public class ZhangSuenThinning extends PubLayout {
         multilabelmod.setOutputMarkupId(true);
 
         final Model<Integer> tresholdModel = new Model();
-        RangeTextField treshold = new RangeTextField<>("treshold",tresholdModel,Integer.class);
+        RangeTextField treshold = new RangeTextField<Integer>("treshold",tresholdModel,Integer.class);
         treshold.setMaximum(255);
         treshold.setMinimum(0);
         treshold.add(new OnChangeAjaxBehavior() {
