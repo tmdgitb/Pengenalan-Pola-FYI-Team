@@ -88,6 +88,24 @@ public class OtsuThresholdingContainer {
         log.info("Treshold Otsu Value = {}",otsuTresholding.getThresholdValue());
     }
 
+    public void setOutput2() {
+        log.info("lewat sini rows={} cols={}",Input.rows(), Input.cols());
+        hist.setHistogram(Input);
+        //--------------------------------
+        lookupTable.setSinglelookup();
+        //bn.setTreshold(70);
+        otsuTresholding.setHist(hist);
+        otsuTresholding.findThreshold2();
+        threshold_value = otsuTresholding.getThresholdValue();
+        bn.setTreshold(threshold_value);
+        lookupTable = bn.createBinaryLookup();
+        Mat Outputsemi = bn.getBinaryImage(Input, lookupTable);
+        if (bn.getMin()==0)Outputsemi = bn.getInvers(Outputsemi);
+        Otsuresult = Outputsemi.clone();
+        //log.info("Selesai sudah row={} col={}",Output.rows(),Output.cols());
+        log.info("Treshold Otsu Value = {}",otsuTresholding.getThresholdValue());
+    }
+
     public byte[] getInput() {
         MatOfByte result = new MatOfByte();
         Highgui.imencode(".png", Input, result);

@@ -163,7 +163,7 @@ public class HistogramServPage extends PubLayout {
     }
 
     public byte[] getOutput() {
-        eq.gammaProcessing();
+        eq.cdfProcessing();
         return eq.getOutput();
     }
 }

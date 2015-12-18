@@ -18,9 +18,11 @@ public class EqualizationContainer {
     private Mat image, output;
     private LookupTable lookupTable;
     private GammaCorrection gammaCorrection;
+    private CDFEqualization cdfEqualization;
 
     public EqualizationContainer() {
         gammaCorrection = new GammaCorrection();
+        cdfEqualization = new CDFEqualization();
         lookupTable = new LookupTable();
         hist = new Histogram();
         histoutput = new Histogram();
@@ -73,6 +75,12 @@ public class EqualizationContainer {
     public void gammaProcessing() {
         lookupTable = gammaCorrection.createGammaCorrectionLookup();
         this.output = gammaCorrection.getEditedImageRGB(image, lookupTable);
+    }
+
+    public void cdfProcessing(){
+        setHist();
+        lookupTable = cdfEqualization.createCDFLookup(hist);
+        this.output = cdfEqualization.getEditedImageRGB(image, lookupTable);
     }
 
     public byte[] getInput() {

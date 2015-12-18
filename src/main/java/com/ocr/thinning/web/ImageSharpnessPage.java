@@ -94,12 +94,12 @@ public class ImageSharpnessPage extends PubLayout {
 
     @Override
     public IModel<String> getTitleModel() {
-        return new Model<>("Sharpness Grayscale");
+        return new Model<>("Deteksi Tepi Orde 0");
     }
 
     @Override
     public IModel<String> getMetaDescriptionModel() {
-        return new Model<>("Sharpness Grayscale");
+        return new Model<>("Deteksi Tepi Orde 0");
     }
 
 }

@@ -104,12 +104,12 @@ public class ConvolutionPage extends PubLayout {
 
     @Override
     public IModel<String> getTitleModel() {
-        return new Model<>("Konvolusi Grayscale");
+        return new Model<>("Deteksi Tepi");
     }
 
     @Override
     public IModel<String> getMetaDescriptionModel() {
-        return new Model<>("Konvolusi Grayscale");
+        return new Model<>("Deteksi Tepi");
     }
 
 

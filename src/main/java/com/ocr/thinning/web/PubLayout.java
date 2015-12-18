@@ -40,9 +40,10 @@ public abstract class PubLayout extends WebPage {
         add(new BookmarkablePageLink<>("equalizationLink",HistogramServPage.class));
         add(new BookmarkablePageLink<>("chainCodeLink",ChainCodePage.class));
         add(new BookmarkablePageLink<>("zhangSuenLink",ZhangSuenThinning.class));
+        add(new BookmarkablePageLink<>("otsuOnlyLink",OtsuOnlyPage.class));
         add(new BookmarkablePageLink<>("otsuLink",OtsuThresholdingPage.class));
-        add(new BookmarkablePageLink<>("convolutionLink",ConvolutionPage.class));
         add(new BookmarkablePageLink<>("sharpnessLink",ImageSharpnessPage.class));
+        add(new BookmarkablePageLink<>("convolutionLink",ConvolutionPage.class));
         add(new BookmarkablePageLink<>("lineObserverLink",LineObserverPage.class));
         add(new BookmarkablePageLink<>("colorMappingLink",ColorMapGroupingPage.class));
         //       add(new BookmarkablePageLink<>("histogramLink", HistogramPage.class));

@@ -3,16 +3,11 @@
         <div class="page-header" id="banner">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Deteksi Tepi Orde 0</h1>
+                    <h1>Otsu Thresholding Algorithm</h1>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div>
-                <label>Pilih Operator </label>
-                <br/>
-                <select wicket:id="sites"></select>
-            </div>
             <div class="col-md-6" style="padding:4px 0px 15px 0px">
                 <input wicket:id="fileUpload" type="file" accept="image/*"/>
             </div>
@@ -20,10 +15,13 @@
                 <button wicket:id="klik">Pilih</button>
             </div>
             <div class="col-md-6">
-                <img class="img-responsive" wicket:id="input"/>
+                <img class="img-responsive" wicket:id="inputZhangSuen"/>
             </div>
             <div class="col-md-6">
-                <img class="img-responsive" wicket:id="output"/>
+                <img class="img-responsive" wicket:id="otsuThreshold"/>
+            </div>
+            <div>
+                Unique Color :<span wicket:id="markupLabel" class="mark">123</span>
             </div>
         </div>
     </form>

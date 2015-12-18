@@ -27,6 +27,8 @@ public class ColorMapGroupingContainer {
         final File imageFile = new File(sources);
         this.input = Highgui.imread(imageFile.getPath(), Highgui.CV_LOAD_IMAGE_COLOR);
         this.bin = Highgui.imread(imageFile.getPath(), Highgui.CV_LOAD_IMAGE_GRAYSCALE);
+        resizeInput();
+        resizeBin();
         grayscale = bin.clone();
         zerosBin();
         //resizeBin();
@@ -39,6 +41,8 @@ public class ColorMapGroupingContainer {
         mb.fromArray(gambar);
         this.input = Highgui.imdecode(mb, Highgui.CV_LOAD_IMAGE_COLOR);
         this.bin = Highgui.imdecode(mb, Highgui.CV_LOAD_IMAGE_GRAYSCALE);
+        resizeInput();
+        resizeBin();
         grayscale = bin.clone();
         zerosBin();
         //resizeBin();
@@ -189,21 +193,17 @@ public class ColorMapGroupingContainer {
 
     private void resizeBin() {
         if (bin.cols() > 500 || bin.rows() > 500) {
-            //Mat cpyInput = new Mat();
             Size e = Resizer.resizeTo500Max(bin.rows(), bin.cols());
-            log.info("Matrix size = {}", e);
-            Imgproc.resize(bin, bin, e);
-            //Input = cpyInput.clone();
+            log.info("Matrix size = {}",e);
+            Imgproc.resize(bin, bin, e,0,0,Imgproc.INTER_CUBIC);
         }
     }
 
     private void resizeInput() {
         if (input.cols() > 500 || input.rows() > 500) {
-            //Mat cpyInput = new Mat();
             Size e = Resizer.resizeTo500Max(input.rows(), input.cols());
-            log.info("Matrix size = {}", e);
-            Imgproc.resize(input, input, e, 0, 0, Imgproc.INTER_CUBIC);
-            //Input = cpyInput.clone();
+            log.info("Matrix size = {}",e);
+            Imgproc.resize(input, input, e,0,0,Imgproc.INTER_CUBIC);
         }
     }
 }
