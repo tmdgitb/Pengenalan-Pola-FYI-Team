@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="thinningAlgorithm:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="thinningAlgorithm-1.2.6.RELEASE.war">
+      <element id="artifact" artifact-name="thinningAlgorithm:war exploded" />
+    </root>
+  </artifact>
+</component>
