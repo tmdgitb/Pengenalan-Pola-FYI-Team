@@ -7,15 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ef5c9ef-e520-4b45-a393-d3fb00480a06" name="Default" comment="Lastest Commit">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/thinningAlgorithm_war.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/thinningAlgorithm_war_exploded.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/thinningAlgorithm.iml" afterPath="$PROJECT_DIR$/thinningAlgorithm.iml" />
     </list>
     <ignored path="thinningAlgorithm.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -922,7 +914,7 @@
       <created>1444877192669</created>
       <option name="number" value="Default" />
       <updated>1444877192669</updated>
-      <workItem from="1450504218293" duration="8360000" />
+      <workItem from="1450504218293" duration="8472000" />
     </task>
     <task id="LOCAL-00001" summary="new">
       <created>1447243772109</created>
@@ -948,11 +940,17 @@
       <option name="project" value="LOCAL" />
       <updated>1450440927859</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Lastest Commit">
+      <created>1450519352662</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1450519352662</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8360000" />
+    <option name="totallyTimeSpent" value="8472000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="728" extended-state="0" />
