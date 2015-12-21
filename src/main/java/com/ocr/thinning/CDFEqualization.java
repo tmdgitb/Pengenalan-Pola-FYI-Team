@@ -22,7 +22,7 @@ public class CDFEqualization {
             g = g + hist.lv[1][i];
             b = b + hist.lv[2][i];
             gray = gray + hist.lv[3][i];
-            log.info("value {} hist0 {} ", ((hist.lv[0].length - 1) * b) / (float) (hist.totalPix), b);
+            //log.info("value {} hist0 {} ", ((hist.lv[0].length - 1) * b) / (float) (hist.totalPix), b);
             lp.setLookuplvValue(0, i, Math.round(((hist.lv[0].length - 1) * b) / (float) (hist.totalPix)));
             lp.setLookuplvValue(1, i, Math.round(((hist.lv[1].length - 1) * g) / (float) (hist.totalPix)));
             lp.setLookuplvValue(2, i, Math.round(((hist.lv[2].length - 1) * r) / (float) (hist.totalPix)));

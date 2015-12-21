@@ -9,13 +9,21 @@
         </div>
         <div class="row">
             <div>
+                <label>Pilih Metode Pembuatan T.Lookup </label>
+                <br/>
+                <select wicket:id="sites"></select>
+            </div>
+            <div>
                 Gamma (1-7) <input type="range" wicket:id="gamma"/>
             </div>
             <div class="col-md-6" style="padding:4px 0px 15px 0px">
                 <input wicket:id="fileUpload" type="file" accept="image/*"/>
             </div>
-            <div class="col-md-6" style="padding:4px 0px 15px 0px">
+            <div class="col-md-3" style="padding:4px 0px 15px 0px">
                 <button wicket:id="klik">Get Image</button>
+            </div>
+            <div class="col-md-3" style="padding:4px 0px 15px 0px">
+                <button wicket:id="histresult">Get Image</button>
             </div>
             <div class="col-md-6">
                 <img class="img-responsive" wicket:id="inputPic"/>

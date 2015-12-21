@@ -33,7 +33,6 @@ public class EqualizationContainer {
     }
 
     public void setImage(byte[] inputimage) {
-        this.output = image.clone();
         MatOfByte mb = new MatOfByte();
         mb.fromArray(inputimage);
         this.image = Highgui.imdecode(mb, 1);
@@ -47,17 +46,16 @@ public class EqualizationContainer {
     public void setHist() {
         hist = new Histogram();
         hist.setHistogram(image);
-        log.info("sini : row={} col={}", image.rows(), image.cols());
-        log.info("hist color : clr={} ", hist.uniqueColor);
     }
 
     public Histogram getHistoutput() {
+        //setHistoutput();
         return histoutput;
     }
 
     public void setHistoutput() {
         histoutput = new Histogram();
-        histoutput.setHistogram(output);
+        histoutput.setHistogram(this.output);
     }
 
     public Mat getImage() {

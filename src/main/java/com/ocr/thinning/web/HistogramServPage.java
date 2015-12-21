@@ -3,6 +3,8 @@ package com.ocr.thinning.web;
 import com.google.common.collect.ImmutableList;
 import com.ocr.thinning.EqualizationContainer;
 import com.ocr.thinning.Histogram;
+import com.ocr.thinning.OperatorOption;
+import com.ocr.thinning.SelectOption;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.ladda.LaddaAjaxButton;
 import de.agilecoders.wicket.webjars.request.resource.WebjarsCssResourceReference;
@@ -15,6 +17,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RangeTextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
@@ -23,12 +26,14 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.DynamicImageResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,18 +44,29 @@ public class HistogramServPage extends PubLayout {
     private EqualizationContainer eq;
     private FileUploadField fileUpload = new FileUploadField("fileUpload");
     private String UPLOAD_FOLDER = "C:\\";
+    private List<SelectOption> EQ_METHOD;
+    private SelectOption selected;
     private static final Logger log = LoggerFactory.getLogger(HistogramServPage.class);
+
     public HistogramServPage(PageParameters parameters) {
         super(parameters);
         eq.setImageTest();
-        eq.gammaProcessing();
+        eq.cdfProcessing();
+        EQ_METHOD = new ArrayList<>();
+        EQ_METHOD.add(new SelectOption("Gamma Correction", OperatorOption.GAMMA_EQUALIZATION));
+        EQ_METHOD.add(new SelectOption("CDF Lookup", OperatorOption.CDF_EQUALIZATION));
+        selected = EQ_METHOD.get(1);
         final Form<Void> form = new Form<Void>("form");
+        DropDownChoice<SelectOption> listOperator;
+        PropertyModel<SelectOption> dropdownmod = new PropertyModel<SelectOption>(this, "selected");
+        listOperator = new DropDownChoice<SelectOption>("sites", dropdownmod, EQ_METHOD);
+        form.add(listOperator);
         WebMarkupContainer chartrgb = new WebMarkupContainer("chartrgb");
         chartrgb.setOutputMarkupId(true);
-        WebMarkupContainer chartrgbout = new WebMarkupContainer("chartrgbout");
-        chartrgbout.setOutputMarkupId(true);
+        WebMarkupContainer zchartrgbout = new WebMarkupContainer("chartrgbout");
+        zchartrgbout.setOutputMarkupId(true);
         form.add(fileUpload);
-        Image inputan  = new Image("inputPic", new DynamicImageResource("image/png") {
+        Image inputan = new Image("inputPic", new DynamicImageResource("image/png") {
             @Override
             protected byte[] getImageData(Attributes attributes) {
                 return getInput();
@@ -58,7 +74,7 @@ public class HistogramServPage extends PubLayout {
         });
         inputan.setOutputMarkupId(true);
         form.add(inputan);
-        Image outputan  = new Image("outputPic", new DynamicImageResource("image/png") {
+        Image outputan = new Image("outputPic", new DynamicImageResource("image/png") {
             @Override
             protected byte[] getImageData(Attributes attributes) {
                 return getOutput();
@@ -67,16 +83,16 @@ public class HistogramServPage extends PubLayout {
         outputan.setOutputMarkupId(true);
         form.add(outputan);
         final Model<Integer> tresholdModel = new Model();
-        RangeTextField treshold = new RangeTextField<>("gamma",tresholdModel,Integer.class);
+        RangeTextField treshold = new RangeTextField<>("gamma", tresholdModel, Integer.class);
         treshold.setMaximum(100);
         treshold.setMinimum(0);
         treshold.add(new OnChangeAjaxBehavior() {
             @Override
             protected void onUpdate(AjaxRequestTarget ajaxRequestTarget) {
-                float slider = (float)((tresholdModel.getObject() * 6) + 100) / 100;
+                float slider = (float) ((tresholdModel.getObject() * 6) + 100) / 100;
                 eq.setGammaValue(slider);
-                log.info("slider value = {} ",slider);
-                ajaxRequestTarget.add(outputan,chartrgbout);
+                log.info("slider value = {} ", slider);
+                ajaxRequestTarget.add(outputan, zchartrgbout);
             }
         });
         form.add(treshold);
@@ -86,7 +102,7 @@ public class HistogramServPage extends PubLayout {
             protected String load() {
                 eq.setHist();
                 final String dataJson = eq.getHist().getJsonC3String();
-                log.info("String result : {}",dataJson);
+                log.info("String result : {}", dataJson);
                 return "var chart = c3.generate({\n" +
                         "    bindto: '#" + chartrgb.getMarkupId() + " .chart',\n" +
                         "    data: {" +
@@ -104,9 +120,9 @@ public class HistogramServPage extends PubLayout {
             protected String load() {
                 eq.setHistoutput();
                 final String dataJson = eq.getHistoutput().getJsonC3String();
-                log.info("String result : {}",dataJson);
+                log.info("String result : {}", dataJson);
                 return "var chart = c3.generate({\n" +
-                        "    bindto: '#" + chartrgbout.getMarkupId() + " .chart',\n" +
+                        "    bindto: '#" + zchartrgbout.getMarkupId() + " .chart',\n" +
                         "    data: {" +
                         "        columns: [" + dataJson + "]," +
                         "        colors: {red: 'red', green: 'green', blue: 'blue',grayscale: 'gray'},\n" +
@@ -115,9 +131,9 @@ public class HistogramServPage extends PubLayout {
                         "});";
             }
         };
-        chartrgbout.add(new Label("c3out", c3ModelOut).setEscapeModelStrings(false));
-        form.add(chartrgbout);
-        form.add(new LaddaAjaxButton("klik",new Model<>("Set Image and Process"), Buttons.Type.Default){
+        zchartrgbout.add(new Label("c3out", c3ModelOut).setEscapeModelStrings(false));
+        form.add(zchartrgbout);
+        form.add(new LaddaAjaxButton("klik", new Model<>("Set Image and Process"), Buttons.Type.Default) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
@@ -125,8 +141,15 @@ public class HistogramServPage extends PubLayout {
                 if (uploadedFile != null) {
                     log.info("masuk setelah upload");
                     eq.setImage(uploadedFile.getBytes());
-                    target.add(inputan,chartrgb,treshold);
+                    target.add(inputan, chartrgb, outputan);
                 }
+            }
+        });
+        form.add(new LaddaAjaxButton("histresult", new Model<>("Get Histogram Result"), Buttons.Type.Default) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+                target.add(zchartrgbout);
             }
         });
         add(form);
@@ -158,12 +181,17 @@ public class HistogramServPage extends PubLayout {
         response.render(JavaScriptHeaderItem.forReference(C3_JS));
     }
 
-    public byte[] getInput(){
+    public byte[] getInput() {
         return eq.getInput();
     }
 
     public byte[] getOutput() {
-        eq.cdfProcessing();
+        if (selected.getValue() == OperatorOption.CDF_EQUALIZATION) {
+            eq.cdfProcessing();
+        } else {
+            //6
+            eq.gammaProcessing();
+        }
         return eq.getOutput();
     }
 }
