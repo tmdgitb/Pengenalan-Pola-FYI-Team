@@ -91,7 +91,7 @@ public class ColorMapGroupingPage extends PubLayout {
                 final FileUpload uploadedFile = sampleUpload.getFileUpload();
                 if (uploadedFile != null) {
                     colorMapGroupingContainer.setSample(uploadedFile.getBytes());
-                    colorMapGroupingContainer.setColorMaps(group.getValue(),60);
+                    colorMapGroupingContainer.setColorMaps(group.getValue(),70);
                     target.add(sampleImage);
                 }
             }

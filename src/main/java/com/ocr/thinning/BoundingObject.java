@@ -81,6 +81,7 @@ public class BoundingObject {
             rectangle(input, new Point(y_min, x_min), new Point(y_max, x_max), color);
             findNose(input, grayscale);
             findLips(input, binarry);
+            findEye(input,binarry);
         }
         return input;
     }
@@ -90,7 +91,7 @@ public class BoundingObject {
         int deltay = y_max - y_min;
         double imagerat = (double) (input.cols() * input.rows()) / (double) (deltax * deltay);
         double ratio = (double) (deltax) / (double) (deltay);
-        if (ratio > 1.2 && ratio < 1.8 && imagerat < 90) {
+        if (ratio > 1.1 && ratio < 1.618 && imagerat < 90) {
             log.info("rasio = {} deltaX = {}, deltaY = {}, imagerat = {}", ratio, deltax, deltay, imagerat);
             return true;
         }
@@ -99,10 +100,12 @@ public class BoundingObject {
 
     private void findNose(Mat input, Mat grayscsale) {
         byte[] data = new byte[1];
+        int ylength = (int) ((float) (y_max - y_min) / (float) 3);
+        int xlength = (int) ((float) (x_max - x_min) / (float) 3);
         grayscsale.get(x_min, y_min, data);
         int temp = Byte.toUnsignedInt(data[0]);
-        for (int i = x_min; i < x_max; i++) {
-            for (int j = y_min; j < y_max; j++) {
+        for (int i = x_min + xlength; i < x_max - xlength; i++) {
+            for (int j = y_min + ylength; j < y_max - ylength; j++) {
                 grayscsale.get(i, j, data);
                 int current = Byte.toUnsignedInt(data[0]);
                 if (temp < current) {
@@ -117,10 +120,12 @@ public class BoundingObject {
 
     private void findLips(Mat input, Mat binarry) {
         cek = new boolean[binarry.rows()][binarry.cols()];
-        int chin_nose = x_max - x_nose;
-        new_row_top = x_nose + (int) (0.3 * chin_nose);
+        //int chin_nose = x_max - x_nose;
+        //new_row_top = x_nose + (int) (0.3 * chin_nose);
+        new_row_top = x_max-(int)((x_max-x_nose)/1.5);
+        log.info("xmax {} perbandingan {}",x_max,(int)(x_nose/1.8));
         //int new_row_bottom = x_nose +(int)(0.7*chin_nose);
-        //line(input, new Point(y_min, new_row_top), new Point(y_max, new_row_top), new Scalar(255, 0, 0));
+        line(input, new Point(y_min, new_row_top), new Point(y_max, new_row_top), new Scalar(255, 0, 0));
         addLipsPattern();
         boolean exist = false;
         for (int i = new_row_top; i < x_max; i++) {
@@ -140,6 +145,10 @@ public class BoundingObject {
             }
         }
         //line(input,new Point(y_min,new_row_bottom),new Point(y_max,new_row_bottom),new Scalar(255,0,0));
+    }
+
+    private void findEye(Mat input, Mat binnary){
+
     }
 
     private void mostLeftAndRightLips(int row, Mat binnary, int min_y, int max_y) {
@@ -167,8 +176,8 @@ public class BoundingObject {
     }
 
     private void iterateLips(int i, int j, Mat binnary) {
-        if (i>new_row_top && i<x_max && j>y_min && j<y_max) {
-            log.info("row = {}, col = {}", i, j);
+        if (i > new_row_top && i < x_max && j > y_min && j < y_max) {
+            //log.info("row = {}, col = {}", i, j);
             cek[i][j] = true;
             if (j < y_lips_left) {
                 y_lips_left = j;
@@ -197,11 +206,7 @@ public class BoundingObject {
     private boolean isBlack(int i, int j, Mat binnary) {
         byte[] data = new byte[1];
         binnary.get(i, j, data);
-        if (Byte.toUnsignedInt(data[0]) == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return Byte.toUnsignedInt(data[0]) == 0;
     }
 
     private String getLinePattern(Mat binary, int row, int min_y, int max_y) {

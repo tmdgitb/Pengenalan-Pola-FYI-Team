@@ -50,7 +50,7 @@ public class DFSIteration {
     }
 
     private void iterate(int i, int j) {
-        if ((i >= 0 && i < binary.rows() && j >= 0 && j < binary.cols())) {
+        if ((i > 0 && i < binary.rows()-1 && j > 0 && j < binary.cols()-1)) {
             if (i < bo.getX_min()) {
                 bo.setX_min(i);
             }
@@ -83,14 +83,10 @@ public class DFSIteration {
     }
 
     private boolean checkNeightbouringElement(int i, int j) {
-        if ((i >= 0 && i < binary.rows() && j >= 0 && j < binary.cols())) {
+        if ((i > 0 && i < binary.rows()-1 && j > 0 && j < binary.cols()-1)) {
             byte[] data = new byte[1];
             binary.get(i, j, data);
-            if (Byte.toUnsignedInt(data[0]) == foreground && !cek[i][j]) {
-                return true;
-            } else {
-                return false;
-            }
+            return Byte.toUnsignedInt(data[0]) == foreground && !cek[i][j];
         }else return false;
     }
 
