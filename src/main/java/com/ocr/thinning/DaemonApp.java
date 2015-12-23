@@ -17,6 +17,7 @@ public class DaemonApp implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(DaemonApp.class);
 
     public static void main(String[] args) {
+        log.info("java.library.path: {}", System.getProperty("java.library.path"));
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         new SpringApplicationBuilder(DaemonApp.class)
                 .profiles("daemonApp")

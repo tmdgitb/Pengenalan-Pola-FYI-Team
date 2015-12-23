@@ -81,7 +81,7 @@ public class BoundingObject {
             rectangle(input, new Point(y_min, x_min), new Point(y_max, x_max), color);
             findNose(input, grayscale);
             findLips(input, binarry);
-            findEye(input,binarry);
+            findEye(input, grayscale, binarry);
         }
         return input;
     }
@@ -118,14 +118,37 @@ public class BoundingObject {
         circle(input, new Point(y_nose, x_nose), 2, new Scalar(255, 0, 0), 2);
     }
 
+
+    private void findEye(Mat input, Mat gray, Mat binnary) {
+        int xeyeline = x_nose - (int) ((x_max - x_nose) / 1.618); //batas x_atas
+        int xeyeline2 = x_nose - (x_max - x_nose) / 4; //batas_x_bawah
+
+        //--------------------------------------------------------------------------------------------------
+        int ylength = (int) ((float) (y_max - y_min) / (float) 3);
+        //--------------------------------------------------------------------------------------------------
+        int yright = y_max - ylength;
+        int yleft = y_min + ylength;
+        //--------------------------------------------------------------------------------------------------
+        rectangle(input, new Point(y_min, xeyeline), new Point(yleft, xeyeline2), new Scalar(255, 0, 0), 2);
+        rectangle(input, new Point(yright, xeyeline), new Point(y_max, xeyeline2), new Scalar(255, 0, 0), 2);
+        //circle(input, new Point(y_eye_left, x_eye_left), 2, new Scalar(255, 0, 0), 2);
+        //circle(input, new Point(y_eye_right, x_eye_right), 2, new Scalar(255, 0, 0), 2);
+        //line(input, new Point(y_min, xeyeline), new Point(y_max, xeyeline), new Scalar(255, 0, 0));
+        //line(input, new Point(y_min, xeyeline2), new Point(y_max, xeyeline2), new Scalar(255, 0, 0));
+        //line(input, new Point(yleft, x_min), new Point(yleft, x_max), new Scalar(255, 0, 0));
+        //line(input, new Point(yright, x_min), new Point(yright, x_max), new Scalar(255, 0, 0));
+    }
+
     private void findLips(Mat input, Mat binarry) {
         cek = new boolean[binarry.rows()][binarry.cols()];
         //int chin_nose = x_max - x_nose;
         //new_row_top = x_nose + (int) (0.3 * chin_nose);
-        new_row_top = x_max-(int)((x_max-x_nose)/1.5);
-        log.info("xmax {} perbandingan {}",x_max,(int)(x_nose/1.8));
+        new_row_top = x_max - (int) ((x_max - x_nose) / 1.5);
+        //log.info("xmax {} perbandingan {}", x_max, (int) (x_nose / 1.8));
         //int new_row_bottom = x_nose +(int)(0.7*chin_nose);
-        line(input, new Point(y_min, new_row_top), new Point(y_max, new_row_top), new Scalar(255, 0, 0));
+        //line(input, new Point(y_min, new_row_top), new Point(y_max, new_row_top), new Scalar(255, 0, 0));
+        circle(input, new Point(y_min, new_row_top), 2, new Scalar(255, 0, 0), 1);
+        circle(input, new Point(y_max, new_row_top), 2, new Scalar(255, 0, 0), 1);
         addLipsPattern();
         boolean exist = false;
         for (int i = new_row_top; i < x_max; i++) {
@@ -145,10 +168,6 @@ public class BoundingObject {
             }
         }
         //line(input,new Point(y_min,new_row_bottom),new Point(y_max,new_row_bottom),new Scalar(255,0,0));
-    }
-
-    private void findEye(Mat input, Mat binnary){
-
     }
 
     private void mostLeftAndRightLips(int row, Mat binnary, int min_y, int max_y) {
@@ -238,4 +257,111 @@ public class BoundingObject {
         lipsPattern.add("hphph");
         lipsPattern.add("php");
     }
+
+    /*
+    private void findEye(Mat input, Mat gray, Mat binnary) {
+        int xeyeline = x_nose - (int) ((x_max - x_nose) / 1.618); //batas x_atas
+        int xeyeline2 = x_nose - (int) ((x_max - x_nose) / 4); //batas_x_bawah
+
+        //--------------------------------------------------------------------------------------------------
+        int ylength = (int) ((float) (y_max - y_min) / (float) 3);
+        //--------------------------------------------------------------------------------------------------
+        int yright = y_max - ylength;
+        int yleft = y_min + ylength;
+        //--------------------------------------------------------------------------------------------------
+        int maxgraylevel = 0;
+        int[] row_eyeleft = new int[xeyeline2 - xeyeline];
+        int[] col_eyeleft = new int[yleft - y_min];
+        for (int i = y_min; i < yleft; i++) {
+            Mat scanLine = gray.row(i);
+            Mat scanBin = binnary.row(i);
+            for (int j = xeyeline; j < xeyeline2; j++) {
+                byte[] tinyimg = new byte[1];
+                byte[] tinybin = new byte[1];
+                scanLine.get(0, j, tinyimg);
+                scanBin.get(0, j, tinybin);
+                int reference = Byte.toUnsignedInt(tinyimg[0]);
+                int referenceBin = Byte.toUnsignedInt(tinybin[0]);
+                col_eyeleft[i - y_min] = col_eyeleft[i - y_min] + reference;
+                row_eyeleft[j - xeyeline] = row_eyeleft[j - xeyeline] + reference;
+                //------------------------------------
+                if (maxgraylevel < reference && referenceBin == 0) {
+                    x_eye_left = j;
+                    y_eye_left = i;
+                    maxgraylevel = reference;
+                }
+                //------------------------
+            }
+        }
+        int xmax_temp_left = 0;
+        int xindex_left = 0;
+        for (int i = 0; i < row_eyeleft.length; i++) {
+            if (xmax_temp_left < row_eyeleft[i]) {
+                xmax_temp_left = row_eyeleft[i];
+                xindex_left = i;
+            }
+        }
+        int ymax_temp_left = 0;
+        int yindex_left = 0;
+        for (int i = 0; i < col_eyeleft.length; i++) {
+            if (ymax_temp_left < col_eyeleft[i]) {
+                ymax_temp_left = col_eyeleft[i];
+                yindex_left = i;
+            }
+        }
+        x_eye_left = xeyeline + xindex_left;
+        y_eye_left = y_min + yindex_left;
+        log.info("col eyeleft {} ymin {} yleft{}", col_eyeleft, y_min, yleft);
+        log.info("row eyeleft {}  xeyeline {} xeyeline2 {}", row_eyeleft, xeyeline, xeyeline2);
+        maxgraylevel = 0;
+        int[] row_eyeright = new int[xeyeline2 - xeyeline];
+        int[] col_eyeright = new int[y_max - yright];
+        for (int i = yright; i < y_max; i++) {
+            Mat scanLine = gray.row(i);
+            Mat scanBin = binnary.row(i);
+            for (int j = xeyeline; j < xeyeline2; j++) {
+                byte[] tinyimg = new byte[1];
+                byte[] tinybin = new byte[1];
+                scanLine.get(0, j, tinyimg);
+                scanBin.get(0, j, tinybin);
+                int reference = Byte.toUnsignedInt(tinyimg[0]);
+                int referenceBin = Byte.toUnsignedInt(tinybin[0]);
+                //log.info("gray lv : {}",referenceBin);
+                col_eyeright[i - yright] = col_eyeleft[i - yright] + reference;
+                row_eyeright[j - xeyeline] = row_eyeleft[j - xeyeline] + reference;
+                //-------------------
+                if (maxgraylevel < reference && referenceBin == 0) {
+                    x_eye_right = j;
+                    y_eye_right = i;
+                    maxgraylevel = reference;
+                }
+                //-----------------
+            }
+        }
+        int xmax_temp_right = 0;
+        int xindex_right = 0;
+        for (int i = 0; i < row_eyeright.length; i++) {
+            if (xmax_temp_right < row_eyeright[i]) {
+                xmax_temp_right = row_eyeright[i];
+                xindex_right = i;
+            }
+        }
+        int ymax_temp_right = 0;
+        int yindex_right = 0;
+        for (int i = 0; i < col_eyeright.length; i++) {
+            if (ymax_temp_right < col_eyeright[i]) {
+                ymax_temp_right = col_eyeright[i];
+                yindex_right = i;
+            }
+        }
+        x_eye_right = xeyeline + xindex_right;
+        y_eye_right = yright + yindex_right;
+        circle(input, new Point(y_eye_left, x_eye_left), 2, new Scalar(255, 0, 0), 2);
+        circle(input, new Point(y_eye_right, x_eye_right), 2, new Scalar(255, 0, 0), 2);
+        line(input, new Point(y_min, xeyeline), new Point(y_max, xeyeline), new Scalar(255, 0, 0));
+        line(input, new Point(y_min, xeyeline2), new Point(y_max, xeyeline2), new Scalar(255, 0, 0));
+        line(input, new Point(yleft, x_min), new Point(yleft, x_max), new Scalar(255, 0, 0));
+        line(input, new Point(yright, x_min), new Point(yright, x_max), new Scalar(255, 0, 0));
+    }
+    */
 }

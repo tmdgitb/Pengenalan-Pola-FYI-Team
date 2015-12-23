@@ -15,6 +15,14 @@ public class OperatorKernel {
     private int[][] operatorX;
     private int[][] operatorY;
     private int[][] gaussianOperator;
+    private int[][] kirschOperator1;
+    private int[][] kirschOperator2;
+    private int[][] kirschOperator3;
+    private int[][] kirschOperator4;
+    private int[][] kirschOperator5;
+    private int[][] kirschOperator6;
+    private int[][] kirschOperator7;
+    private int[][] kirschOperator8;
 
     private int kelas;
     private int a = 0, b = 0, c = 0, d = 0, e = 0, f = 0;
@@ -59,6 +67,15 @@ public class OperatorKernel {
     }
 
     public void setOperatorKirsch() {
+        kirschOperator1[0][0] = -3;
+        kirschOperator1[0][1] = -3;
+        kirschOperator1[0][2] = 5;
+        kirschOperator1[1][0] = -3;
+        kirschOperator1[1][1] = 0;
+        kirschOperator1[1][2] = 5;
+        kirschOperator1[2][0] = -3;
+        kirschOperator1[2][1] = -3;
+        kirschOperator1[2][2] = 5;
 
     }
 
@@ -137,27 +154,13 @@ public class OperatorKernel {
      */
     public int getGradienXY(int[] npixel) {
         int a = (int) Math.sqrt(npixel.length);
-        int[][] p = new int[a][a];
-        int itr = 0;
-        for (int i = 0; i < a; i++) {
-            for (int j = 0; j < a; j++) {
-                p[i][j] = npixel[itr];
-                itr++;
-            }
-        }
+        int[][] p = arrayNtoArray2D(npixel, a);
         return Konvolutor.konvolusi(getOperatorX(), p) + Konvolutor.konvolusi(getOperatorY(), p);
     }
 
     public int getGradienGauss(int[] npixel) {
         int a = (int) Math.sqrt(npixel.length);
-        int[][] p = new int[a][a];
-        int itr = 0;
-        for (int i = 0; i < a; i++) {
-            for (int j = 0; j < a; j++) {
-                p[i][j] = npixel[itr];
-                itr++;
-            }
-        }
+        int[][] p = arrayNtoArray2D(npixel, a);
         return Konvolutor.konvolusi(gaussianOperator, p);
     }
 
@@ -186,5 +189,17 @@ public class OperatorKernel {
         }
         double result = value / sum;
         return (int) result;
+    }
+
+    public static int[][] arrayNtoArray2D(int[] npixel, int a) {
+        int itr = 0;
+        int[][] p = new int[a][a];
+        for (int i = 0; i < a; i++) {
+            for (int j = 0; j < a; j++) {
+                p[i][j] = npixel[itr];
+                itr++;
+            }
+        }
+        return p;
     }
 }
